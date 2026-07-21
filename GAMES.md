@@ -77,6 +77,37 @@ tap-timing mechanics (binary input) on session length and share-rate?
 
 ---
 
+## 4 · OpenLab — *open-world mechanics gray-box (R&D, 3D)*
+
+**One-liner:** A whole city to mess with.
+
+**Short description (80 chars):**
+Run, drive, ride. Take jobs, dodge the cops, own the city. Open-world arcade.
+
+**Full description:**
+A pocket open world that fits in your pocket. Sprint through a neon gray-box
+city on foot, steal— er, *borrow* the car, or saddle up the horse. Yellow
+pillars mark the jobs: deliveries to run, checkpoint races to win, all on your
+terms — any vehicle, any route. Cause trouble and the stars start stacking:
+cops close in, and BUSTED costs you. Day rolls into night, the minimap keeps
+you honest, and the leaderboard remembers who really ran this town.
+
+**Keywords:** open world, driving, sandbox, city, missions, police chase, 3D
+
+**Experiment question:** this one is R&D, not a weekly release. It exists to
+answer: which open-world *system* (driving, shooting, missions, chase/wanted)
+creates the most engagement per dev-hour — and can Godot's mobile renderer
+hold a crowd + city + vehicles at 60fps on low-end Android? The winning system
+gets extracted into a focused hypercasual title (chase game, sniper game,
+delivery game — all proven mobile niches).
+
+**Honest scope note:** OpenLab is a mechanics slice — the first artifact any
+studio builds on the road toward GTA/RDR2-scale ambitions. It is gray-box by
+design: systems first, beauty later. Do not compare it to a $2B production;
+compare each mechanic to "is this fun for 30 seconds?" — that's the test.
+
+---
+
 ## Portfolio notes
 
 - All three run fully offline; leaderboards/config/cross-promo light up when
