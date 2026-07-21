@@ -204,16 +204,49 @@ kart, marble, archero twin-stick, fruit-slice, flight, bridge race, aquapark,
 melee combo, physics demolition, FPS wave, 3D arcade idle). Adding a 3D
 mechanic = extend MechDemo3D + one DEMOS entry, same as the 2D lab.
 
-## Batch roadmap
+## Batch roadmap — ALL BUILT (2026-07-21)
 
-- **Batch 1 (LIVE):** snake, breakout, asteroids, sokoban, flappy, match3,
-  sling, rhythm, towerdef, idle — the historical canon, one per family anchor.
-- **Batch 2:** tetris, 2048, bubble shooter, block blast, wordle, platformer,
-  color-gate, billiards, artillery, stealth-cones.
-- **Batch 3:** vampire-survivors-lite, solitaire, push-your-luck, word search,
-  minesweeper, pipes, hill-climb, geometry-dash-lite.
-- **Batch 4:** turn-based RPG combat, loot/rarity, gacha sim, deckbuilder-lite,
-  farm timers, auto-battler-lite, lane pusher PvE.
+- **Batch 1 ✅ (mechlab):** snake, breakout, asteroids, sokoban, flappy, match3,
+  sling, rhythm, towerdef, idle.
+- **Batch 2 ✅ (mechlab):** tetris, g2048, bubbleshoot, blockblast, billiards,
+  artillery, stealth. (wordle already shipped in the modern wing.)
+- **Batch 3 ✅ (mechlab):** minesweeper, flow (connect-the-dots), tripeaks
+  (solitaire), pushluck, wordsearch, hillclimb. (survivors + geometry-dash
+  shipped earlier as `survivors` / `dashrun`.)
+- **Batch 4 ✅ (mechlab):** rpgcombat, loot, gacha (sim), deckbuilder, farm,
+  autobattler, lanepusher — the deep monetizing systems.
+
+`mechlab` now holds 38 2D demos; `mechlab3d` holds 20 3D demos. 58 playable
+mechanics total across the two labs.
+
+## There is no ceiling — the advanced / systemic tier
+
+The "batches" were a staging order, not a limit. These are candidate future
+builds (each a single-player mechanic we CAN build; the only true blocker is
+real-time-multiplayer infra, still deferred):
+
+- **Roguelike run structure** — map nodes, events, relics, permadeath + meta
+  (Hades / FTL). The framework that wraps deckbuilder/loot into a "run".
+- **Base building + raid** — build, defend, timers, army (Clash of Clans PvE).
+- **City / colony sim** — supply chains, needs, growth (SimCity / Frostpunk).
+- **Incremental / prestige** — reset-for-multiplier depth (Cookie Clicker layer 2).
+- **Physics sandbox** — soft-body / ragdoll / destruction toys.
+- **Rhythm-action hybrid** — beatmap drives combat (Hi-Fi Rush / Crypt of NecroDancer).
+- **Boss-pattern bullet-hell** — telegraph → dodge → punish windows.
+- **Tower-defense variants** — maze TD, co-op lanes, hero TD.
+- **Narrative / choice** — branching dialogue, consequence state (visual novel core).
+- **Deck-drafting / roguelike deckbuilder** — pick-1-of-3 build-a-deck-mid-run.
+- **Auto-chess with synergies** — trait bonuses, item combines, econ curves.
+- **Survivor evolution** — weapon-combine / evolution trees (Vampire Survivors depth).
+- **Turn-based tactics** — grid, cover, action points (Into the Breach / XCOM-lite).
+- **Trading / market sim** — buy-low-sell-high, supply shocks (economy loop).
+- **Merge-3 progression meta** — merge board wrapped in a story/energy economy.
+
+Ask for any of these by name and it becomes the next batch. (Multiplayer verbs
+— MOBA, battle royale, .io arenas, CCG PvP, Roblox-style UGC — remain 🚫 not
+because the mechanic is hard but because they need a real-time server + player
+base, a business decision we deferred until one single-player mechanic proves
+retention worth scaling socially.)
 
 ## How to read the data (the point of all this)
 
