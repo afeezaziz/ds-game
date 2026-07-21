@@ -135,6 +135,31 @@ low-end Android? Winners graduate to their own polished title.
 
 ---
 
+## 7 · DeepLab — *deep / systemic mechanics museum*
+
+**One-liner:** The systems behind games that last months, not minutes.
+
+**Short description (80 chars):**
+Roguelike runs, prestige, base-build, tactics, boss-hell, city sim — 6 deep loops.
+
+**Full description:**
+Where the casual labs prototype 3-minute toys, DeepLab prototypes the systems
+that keep players for months. Chart a branching roguelike run past elites and
+bosses; reset an idle empire for permanent prestige multipliers; build and raid
+a base economy; out-manoeuvre a squad on a tactics grid; dodge a boss's
+telegraphed bullet patterns; and balance food against population in a growing
+city. All gray-box, all the shapes behind the top-grossing charts — built to
+answer which deep system is worth wrapping a proven casual mechanic inside.
+
+**Keywords:** roguelike, prestige, idle, base-build, tactics, bullet-hell, sim
+
+**Experiment question:** which deep loop (run-structure / prestige-reset /
+build-economy / tactics / boss-action / city-balance) most deserves to *wrap*
+a winning casual mechanic — turning a toy into a retained, monetizing game.
+See ADVANCED_TIER.md for the full 15-mechanic tier and what's still queued.
+
+---
+
 ## Portfolio notes
 
 - All three run fully offline; leaderboards/config/cross-promo light up when
