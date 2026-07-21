@@ -78,16 +78,17 @@ func cfg(key: String, default_value: Variant) -> Variant:
 
 # ---------- gameplay services ----------
 
-func submit_score(score: int) -> Dictionary:
+func submit_score(score: int, board: String = "main") -> Dictionary:
 	if not online:
 		return {}
-	return await _request(HTTPClient.METHOD_POST, "/scores/" + GameState.game_id, {"score": score})
+	return await _request(HTTPClient.METHOD_POST, "/scores/" + GameState.game_id,
+		{"score": score, "board": board})
 
-func get_leaderboard(limit: int = 10) -> Dictionary:
+func get_leaderboard(limit: int = 10, board: String = "main") -> Dictionary:
 	if not online:
 		return {}
 	return await _request(HTTPClient.METHOD_GET,
-		"/leaderboards/%s?limit=%d" % [GameState.game_id, limit])
+		"/leaderboards/%s?limit=%d&board=%s" % [GameState.game_id, limit, board.uri_encode()])
 
 func push_save(data: Dictionary, version: int) -> Dictionary:
 	if not online:

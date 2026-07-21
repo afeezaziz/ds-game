@@ -1,6 +1,8 @@
 extends Node2D
-## Game shell: menu -> playing -> game over. All UI is built in code so the
-## whole game is reviewable as text and trivially copyable for game #2.
+## Game shell: mode-select menu -> playing -> game over. All UI built in code.
+## The menu lists every enabled mechanic from SkyStack.MODES; each mode has its
+## own best score, its own leaderboard (backend board == mode key), and its own
+## analytics tag — so play data can crown the winning mechanic.
 
 enum State { MENU, PLAYING, OVER }
 
@@ -8,18 +10,23 @@ var state: State = State.MENU
 var stack: SkyStack
 var cam: Camera2D
 var shake := 0.0
+var current_mode := "classic"
 var _over_at := 0.0
 
 # UI refs
 var bg: ColorRect
 var menu_box: Control
+var mode_list: VBoxContainer
 var hud_box: Control
 var over_box: Control
 var score_label: Label
 var combo_label: Label
+var mode_label: Label
+var wind_label: Label
 var best_label: Label
 var over_score: Label
 var over_best: Label
+var lb_title: Label
 var lb_box: VBoxContainer
 var promo_box: HBoxContainer
 var flash_rect: ColorRect
@@ -31,6 +38,7 @@ func _ready() -> void:
 	add_child(stack)
 	stack.layer_placed.connect(_on_layer_placed)
 	stack.stack_failed.connect(_on_stack_failed)
+	stack.wind_changed.connect(_on_wind_changed)
 
 	cam = Camera2D.new()
 	cam.position = Vector2(360, 640)
@@ -59,12 +67,16 @@ func _build_ui() -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ui_layer.add_child(root)
 
-	# ----- menu -----
+	# ----- menu (mode select) -----
 	menu_box = _center_box(root)
-	_label(menu_box, "SKY STACK", 84, Color.WHITE)
-	best_label = _label(menu_box, "BEST 0", 36, Color(1, 1, 1, 0.75))
-	_spacer(menu_box, 60)
-	_label(menu_box, "TAP TO PLAY", 44, Color(1, 1, 0.6))
+	_label(menu_box, "SKY STACK", 78, Color.WHITE)
+	_label(menu_box, "MECHANICS LAB", 26, Color(1, 1, 1, 0.5))
+	best_label = _label(menu_box, "BEST 0", 32, Color(1, 1, 1, 0.75))
+	_spacer(menu_box, 30)
+	mode_list = VBoxContainer.new()
+	mode_list.alignment = BoxContainer.ALIGNMENT_CENTER
+	mode_list.add_theme_constant_override("separation", 14)
+	menu_box.add_child(mode_list)
 
 	# ----- HUD -----
 	hud_box = Control.new()
@@ -90,6 +102,26 @@ func _build_ui() -> void:
 	combo_label.size = Vector2(300, 50)
 	combo_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hud_box.add_child(combo_label)
+	mode_label = Label.new()
+	mode_label.text = ""
+	mode_label.add_theme_font_size_override("font_size", 24)
+	mode_label.add_theme_color_override("font_color", Color(1, 1, 1, 0.45))
+	mode_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	mode_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	mode_label.position = Vector2(-150, 20)
+	mode_label.size = Vector2(300, 32)
+	mode_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hud_box.add_child(mode_label)
+	wind_label = Label.new()
+	wind_label.text = ""
+	wind_label.add_theme_font_size_override("font_size", 38)
+	wind_label.add_theme_color_override("font_color", Color(0.6, 0.9, 1.0))
+	wind_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	wind_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	wind_label.position = Vector2(-150, 230)
+	wind_label.size = Vector2(300, 46)
+	wind_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hud_box.add_child(wind_label)
 
 	# ----- game over -----
 	over_box = Control.new()
@@ -105,13 +137,20 @@ func _build_ui() -> void:
 	_label(over_center, "GAME OVER", 64, Color.WHITE)
 	over_score = _label(over_center, "0", 110, Color(1, 0.85, 0.3))
 	over_best = _label(over_center, "", 34, Color(1, 1, 1, 0.8))
-	_spacer(over_center, 24)
+	_spacer(over_center, 20)
+	lb_title = _label(over_center, "", 26, Color(1, 1, 1, 0.6))
 	lb_box = VBoxContainer.new()
 	lb_box.alignment = BoxContainer.ALIGNMENT_CENTER
 	over_center.add_child(lb_box)
-	_spacer(over_center, 24)
+	_spacer(over_center, 20)
 	_label(over_center, "TAP TO RETRY", 40, Color(1, 1, 0.6))
-	_spacer(over_center, 30)
+	var modes_btn := Button.new()
+	modes_btn.text = "MODES"
+	modes_btn.add_theme_font_size_override("font_size", 30)
+	modes_btn.custom_minimum_size = Vector2(220, 64)
+	modes_btn.pressed.connect(_show_menu)
+	over_center.add_child(modes_btn)
+	_spacer(over_center, 20)
 	promo_box = HBoxContainer.new()
 	promo_box.alignment = BoxContainer.ALIGNMENT_CENTER
 	promo_box.add_theme_constant_override("separation", 16)
@@ -173,18 +212,38 @@ func _show_menu() -> void:
 	over_box.visible = false
 	best_label.text = "BEST %d" % GameState.best_score
 	cam.position = Vector2(360, 640)
+	_rebuild_mode_buttons()
 
 
-func _start_game() -> void:
+func _rebuild_mode_buttons() -> void:
+	for c in mode_list.get_children():
+		c.queue_free()
+	for m in SkyStack.enabled_modes():
+		var def: Dictionary = SkyStack.MODES[m]
+		var b := Button.new()
+		var best := GameState.best_for(m)
+		b.text = "%s  —  %s%s" % [def["title"], def["tagline"],
+			("\nBEST %d" % best) if best > 0 else ""]
+		b.add_theme_font_size_override("font_size", 28)
+		b.custom_minimum_size = Vector2(480, 92)
+		b.pressed.connect(_start_game.bind(str(m)))
+		mode_list.add_child(b)
+
+
+func _start_game(m: String = "") -> void:
+	if m != "":
+		current_mode = m
 	state = State.PLAYING
 	menu_box.visible = false
 	over_box.visible = false
 	hud_box.visible = true
 	score_label.text = "0"
 	combo_label.text = ""
+	wind_label.text = ""
+	mode_label.text = str(SkyStack.MODES[current_mode]["title"])
 	bg.color = Color.from_hsv(0.62, 0.55, 0.20)
-	stack.start_game()
-	Analytics.track("game_start", {})
+	stack.start_game(current_mode)
+	Analytics.track("game_start", {"mode": current_mode})
 
 
 func _on_layer_placed(score: int, was_perfect: bool, combo: int) -> void:
@@ -197,48 +256,53 @@ func _on_layer_placed(score: int, was_perfect: bool, combo: int) -> void:
 		combo_label.text = "PERFECT x%d" % combo
 		_flash(0.18 if combo < stack.fever_streak else 0.35)
 		if combo == stack.fever_streak:
-			Analytics.track("fever", {"score": score})
+			Analytics.track("fever", {"score": score, "mode": current_mode})
 	else:
 		combo_label.text = ""
 		shake = 6.0
 	bg.color = Color.from_hsv(fmod(0.62 + score * 0.004, 1.0), 0.55, 0.20)
 
 
+func _on_wind_changed(wind: float) -> void:
+	if current_mode != "wind":
+		wind_label.text = ""
+		return
+	var strength := int(ceil(absf(wind) / 75.0))
+	wind_label.text = (">".repeat(strength)) if wind > 0.0 else ("<".repeat(strength))
+
+
 func _on_stack_failed(score: int) -> void:
 	state = State.OVER
 	_over_at = Time.get_ticks_msec() / 1000.0
 	GameState.register_death()
-	var improved := GameState.report_score(score)
-	Analytics.track("game_over", {"score": score, "best": GameState.best_score})
+	var improved := GameState.report_score(score, current_mode)
+	Analytics.track("game_over", {"score": score, "mode": current_mode,
+		"best": GameState.best_for(current_mode)})
 	Analytics.flush()
 	Ads.maybe_show_interstitial()
 	await Ads.interstitial_closed
 	hud_box.visible = false
 	over_box.visible = true
 	over_score.text = str(score)
-	over_best.text = "NEW BEST!" if improved else "BEST %d" % GameState.best_score
+	over_best.text = "NEW BEST!" if improved else "BEST %d" % GameState.best_for(current_mode)
 	_populate_online_panels(score)
 
 
 func _populate_online_panels(score: int) -> void:
+	lb_title.text = ""
 	for c in lb_box.get_children():
 		c.queue_free()
 	for c in promo_box.get_children():
 		c.queue_free()
 	if not Backend.online:
 		return
-	await Backend.submit_score(score)
-	var lb: Dictionary = await Backend.get_leaderboard(5)
+	await Backend.submit_score(score, current_mode)
+	var lb: Dictionary = await Backend.get_leaderboard(5, current_mode)
 	if state != State.OVER:
 		return  # player already restarted while we were fetching
 	var entries: Array = lb.get("entries", [])
 	if not entries.is_empty():
-		var title := Label.new()
-		title.text = "— TOP PLAYERS —"
-		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		title.add_theme_font_size_override("font_size", 26)
-		title.add_theme_color_override("font_color", Color(1, 1, 1, 0.6))
-		lb_box.add_child(title)
+		lb_title.text = "— TOP · %s —" % str(SkyStack.MODES[current_mode]["title"])
 		for e in entries:
 			var row := Label.new()
 			row.text = "%d. %s   %d" % [e.get("rank", 0), e.get("name", "?"), e.get("score", 0)]
@@ -277,7 +341,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	match state:
 		State.MENU:
-			_start_game()
+			pass  # mode buttons handle input
 		State.PLAYING:
 			stack.drop()
 		State.OVER:
@@ -287,11 +351,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	offline_label.visible = not Backend.online
-	# Smooth camera follow.
-	var target_y: float = minf(640.0, stack.top_y() - 640.0 + 950.0)
-	cam.position.y = lerpf(cam.position.y, target_y, 1.0 - pow(0.001, delta))
+	if state == State.PLAYING:
+		var target_y: float = minf(640.0, stack.top_y() - 640.0 + 950.0)
+		cam.position.y = lerpf(cam.position.y, target_y, 1.0 - pow(0.001, delta))
 	cam.position.x = 360.0
-	# Decaying screen shake.
 	if shake > 0.05:
 		shake = lerpf(shake, 0.0, 10.0 * delta)
 		cam.offset = Vector2(randf_range(-shake, shake), randf_range(-shake, shake))
