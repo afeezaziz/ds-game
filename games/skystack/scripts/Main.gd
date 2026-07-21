@@ -255,11 +255,18 @@ func _on_layer_placed(score: int, was_perfect: bool, combo: int) -> void:
 	if was_perfect:
 		combo_label.text = "PERFECT x%d" % combo
 		_flash(0.18 if combo < stack.fever_streak else 0.35)
+		Juice.sfx("chime", 1.0 + minf(combo, 8.0) * 0.06)
+		Juice.popup("PERFECT x%d" % combo, Vector2(360, 430))
+		Juice.haptic(18)
 		if combo == stack.fever_streak:
+			Juice.hitstop(70)
+			Juice.sfx("coin")
 			Analytics.track("fever", {"score": score, "mode": current_mode})
 	else:
 		combo_label.text = ""
 		shake = 6.0
+		Juice.sfx("thud")
+		Juice.haptic(12)
 	bg.color = Color.from_hsv(fmod(0.62 + score * 0.004, 1.0), 0.55, 0.20)
 
 
@@ -274,6 +281,10 @@ func _on_wind_changed(wind: float) -> void:
 func _on_stack_failed(score: int) -> void:
 	state = State.OVER
 	_over_at = Time.get_ticks_msec() / 1000.0
+	shake = 14.0
+	Juice.sfx("boom")
+	Juice.flash(Color(1, 0.35, 0.3), 0.3)
+	Juice.haptic(60)
 	GameState.register_death()
 	var improved := GameState.report_score(score, current_mode)
 	Analytics.track("game_over", {"score": score, "mode": current_mode,

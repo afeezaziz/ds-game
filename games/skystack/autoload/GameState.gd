@@ -4,7 +4,7 @@ extends Node
 
 const SAVE_PATH := "user://local_save.cfg"
 
-var game_id := "skystack"       # <-- change per game
+var game_id := "skystack"      # <-- change per game
 var best_score := 0             # best across all boards/modes
 var bests: Dictionary = {}      # board/mode -> best score
 var total_deaths := 0

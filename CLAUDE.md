@@ -29,6 +29,28 @@ Each game folder is a complete standalone Godot project (open its project.godot)
 4. Ask the backend repo to add the game to `seed.py` (catalog + remote config).
 5. Playtest, then export Android AAB (Godot docs: "Exporting for Android").
 
+## Tools (use these instead of doing it by hand)
+
+- `python tools/new_game.py <id> "Name"` — scaffold a new game from template/.
+- `python tools/sync_autoloads.py [game]` — push template autoload fixes to
+  every game (preserves each game's game_id). Run after ANY autoload change.
+- `python tools/export_android.py [game] [--apk]` — batch AAB/APK export
+  (needs one-time editor setup; see the script's docstring).
+- `.github/workflows/android-build.yml` — CI builds on tag or manual dispatch;
+  secrets documented in the file. iOS deliberately deferred (needs macOS +
+  Apple dev account); add a macos job to the same workflow when a game earns it.
+
+## Juice (feel) rules
+
+- All feel effects go through the `Juice` autoload: `sfx` (synthesized, no
+  asset files), `flash`, `hitstop`, `popup`, `burst`, `shake2d`, `haptic`.
+- Juice intensity is a REMOTE experiment: `juice_level` 0-3 in each game's
+  config block (seed.py). Never hardcode intensity — read the dial, so we can
+  A/B feel against retention. skystack is the reference wiring.
+- Standard vocabulary: success = "chime" (+popup), big success = +"coin"
+  (+hitstop), placement/hit = "thud" (+small haptic), death = "boom"
+  (+red flash +shake). Keep the vocabulary consistent across games.
+
 ## Iron rules (apply to every game)
 
 - **Offline-safe**: the game must be fully playable with the network down.

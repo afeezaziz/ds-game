@@ -17,6 +17,7 @@ GameState="*res://autoload/GameState.gd"
 Backend="*res://autoload/Backend.gd"
 Analytics="*res://autoload/Analytics.gd"
 Ads="*res://autoload/Ads.gd"
+Juice="*res://autoload/Juice.gd"
 
 [display]
 

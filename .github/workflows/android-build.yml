@@ -1,0 +1,68 @@
+# Android CI builds — trigger manually (workflow_dispatch) or on version tags.
+#
+# ONE-TIME SETUP (repo Settings -> Secrets and variables -> Actions):
+#   ANDROID_KEYSTORE_B64   base64 of your release keystore (base64 -w0 release.keystore)
+#   KEYSTORE_USER          keystore alias
+#   KEYSTORE_PASSWORD      keystore password
+#   (optional, for auto-upload to Play Console after the FIRST manual upload)
+#   PLAY_SERVICE_ACCOUNT_JSON  service-account JSON with release permission
+#
+# iOS note: Godot iOS export requires macOS + Xcode + an Apple Developer
+# account. When a game earns an iOS release, add a macos-14 job here — the
+# structure below stays the same. Android-first is deliberate.
+
+name: android-build
+
+on:
+  workflow_dispatch:
+    inputs:
+      game:
+        description: "game folder under games/ (e.g. skystack)"
+        required: true
+        default: "skystack"
+  push:
+    tags: ["v*"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.3
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore keystore
+        run: |
+          echo "$ANDROID_KEYSTORE_B64" | base64 -d > /tmp/release.keystore
+        env:
+          ANDROID_KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+
+      - name: Export AAB
+        run: |
+          GAME="${{ github.event.inputs.game || 'skystack' }}"
+          mkdir -p build
+          # export_presets.cfg is gitignored; CI generates a minimal one from
+          # the checked-in template below, injecting the keystore.
+          cp .github/export_presets.android.tpl "games/$GAME/export_presets.cfg"
+          sed -i "s|__GAME__|$GAME|g" "games/$GAME/export_presets.cfg"
+          sed -i "s|__KEYSTORE__|/tmp/release.keystore|g" "games/$GAME/export_presets.cfg"
+          sed -i "s|__KS_USER__|$KEYSTORE_USER|g" "games/$GAME/export_presets.cfg"
+          sed -i "s|__KS_PASS__|$KEYSTORE_PASSWORD|g" "games/$GAME/export_presets.cfg"
+          godot --headless --path "games/$GAME" --export-release "Android" "../../build/$GAME.aab"
+        env:
+          KEYSTORE_USER: ${{ secrets.KEYSTORE_USER }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.inputs.game || 'skystack' }}-aab
+          path: build/*.aab
+
+      # Uncomment after the app's FIRST manual upload to Play Console:
+      # - name: Upload to Play Console (internal track)
+      #   uses: r0adkll/upload-google-play@v1
+      #   with:
+      #     serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+      #     packageName: com.dreamstudio.${{ github.event.inputs.game || 'skystack' }}
+      #     releaseFiles: build/*.aab
+      #     track: internal
