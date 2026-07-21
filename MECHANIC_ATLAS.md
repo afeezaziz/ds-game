@@ -172,6 +172,38 @@ precision runner). Rows below updated accordingly: wave survival ✅, free-merge
 ✅, guess-with-feedback ✅, geometry-dash runner ✅, plus four rows this table
 previously lacked. The menu now lists the modern wing first.
 
+## 3D wing (2026-07-21) — the `mechlab3d` project
+
+A dedicated sibling project, `games/mechlab3d/`, holds 20 modern 3D / 2.5D
+mechanics (own MechDemo3D base + shell; same board/best/analytics contract).
+All gray-box primitives, all desktop-playable (mouse + WASD) and touch:
+
+1. runner3d — 3-lane endless runner (Subway Surfers)
+2. helix — rotate-tower ball drop (Helix Jump)
+3. stackball — smash-through platforms (Stack Ball)
+4. holeio — swallow-the-city .io (Hole.io)
+5. kart — arcade kart + drift boost (Mario Kart)
+6. marble — roll-the-winding-track (Going Balls)
+7. archero — stop-to-shoot roguelite (Archero)
+8. crowd3d — gate-math crowd runner in 3D (Count Masters)
+9. slice3d — swipe-to-slice (Fruit Ninja)
+10. flight — fly-through-rings, dodge pillars
+11. parkour — jump-the-gaps platformer
+12. tumble — downhill slalom dive
+13. bridgerace — collect-planks-auto-build (Bridge Race)
+14. stackrun — stack-height runner (Shortcut Run)
+15. hoops — flick-arc basketball
+16. aquapark — lean-and-slide water tube (Aquapark.io)
+17. sword — timing-combo melee dash
+18. wreck — RigidBody3D physics demolition
+19. fpswave — first-person wave shooter (zombies)
+20. idle3d — walk-collect-sell 3D idle (Gold mine)
+
+These move many previously-⬜/🔨 rows to ✅ in 3D form (endless runner 3D,
+kart, marble, archero twin-stick, fruit-slice, flight, bridge race, aquapark,
+melee combo, physics demolition, FPS wave, 3D arcade idle). Adding a 3D
+mechanic = extend MechDemo3D + one DEMOS entry, same as the 2D lab.
+
 ## Batch roadmap
 
 - **Batch 1 (LIVE):** snake, breakout, asteroids, sokoban, flappy, match3,

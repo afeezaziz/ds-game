@@ -108,6 +108,33 @@ compare each mechanic to "is this fun for 30 seconds?" — that's the test.
 
 ---
 
+## 6 · MechLab 3D — *modern 3D / 2.5D mechanics museum*
+
+**One-liner:** 20 modern 3D mechanics, one tap away each.
+
+**Short description (80 chars):**
+Runner, kart, hole.io, archero, helix, slice & more — 20 modern 3D demos.
+
+**Full description:**
+The 3D companion to MechLab: twenty of the mechanics actually charting on
+mobile today, each a bite-size playable exhibit. Dodge trains in a lane
+runner, drift a kart, swallow a city as a growing hole, stop-and-shoot your
+way through an Archero room, drop a ball down a spinning Helix tower, slice
+fruit mid-air, fly a plane through rings, build bridges on the run, lean
+through a water slide, and knock a tower down with real physics. All
+gray-box, all instantly playable on desktop (mouse + WASD) or touch — built
+to answer, in 3D, the same question as everything here: which mechanic do
+people replay?
+
+**Keywords:** 3D, hypercasual, runner, .io, kart, archero, helix, arcade
+
+**Experiment question:** which 3D verb (runner / .io growth / auto-shooter /
+timing-drop / physics) earns the most replays per session in gray-box — and
+does Godot's mobile renderer hold 60fps with crowds + procedural worlds on
+low-end Android? Winners graduate to their own polished title.
+
+---
+
 ## Portfolio notes
 
 - All three run fully offline; leaderboards/config/cross-promo light up when
