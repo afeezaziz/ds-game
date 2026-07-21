@@ -1,0 +1,11 @@
+# Godot per-project caches (each game folder generates its own)
+**/.godot/
+*.translation
+
+# Android export secrets/config — never commit keystores
+**/export_presets.cfg
+*.keystore
+
+# OS noise
+Thumbs.db
+.DS_Store

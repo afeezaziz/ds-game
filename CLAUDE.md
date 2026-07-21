@@ -1,0 +1,59 @@
+# Dream Studio — Game Client (Godot 4.3+)
+
+Godot games only. The FastAPI backend lives in the sibling `backend/` folder/repo —
+a Claude Code instance working here NEVER edits the backend; if a game needs a
+backend change (new endpoint, config key, catalog entry), write it down and hand
+it to the backend instance/repo.
+
+## Layout
+
+```
+game-client/
+├── template/          # START HERE for every new game — copy the whole folder
+└── games/
+    └── skystack/      # Game #1, the reference for gameplay polish/juice
+```
+
+Each game folder is a complete standalone Godot project (open its project.godot).
+
+## Creating a new game (the weekly ritual)
+
+1. `cp -r template games/<newgame>` (folder name = game_id, lowercase, no spaces)
+2. In the copy: set `config/name` in `project.godot`, set `game_id` in
+   `autoload/GameState.gd`, set `BASE_URL` in `autoload/Backend.gd` to the
+   deployed backend URL.
+3. Implement the mechanic in `scripts/Gameplay.gd` honoring the contract:
+   `start_game()`, `on_tap()` (or your own input), `score_changed`, `game_ended`.
+   `scripts/Main.gd` (menu/HUD/game over/leaderboard/ads/analytics) usually
+   needs no edits.
+4. Ask the backend repo to add the game to `seed.py` (catalog + remote config).
+5. Playtest, then export Android AAB (Godot docs: "Exporting for Android").
+
+## Iron rules (apply to every game)
+
+- **Offline-safe**: the game must be fully playable with the network down.
+  Backend calls are fire-and-await with graceful empty fallbacks — never block
+  gameplay on a request. `Backend.gd` already behaves this way; keep it so.
+- **Autoloads are the platform.** `Backend.gd`, `Analytics.gd`, `Ads.gd`,
+  `GameState.gd` are shared across all games. Fix bugs in template/ FIRST, then
+  copy the fix into each game's autoload/ (they are duplicated by design so
+  games stay standalone). Never fork their public APIs.
+- Ad SDK integration happens ONLY in `Ads.gd` (currently a stub that fires
+  `interstitial_closed` / `rewarded_completed` after one frame).
+- Portrait 720x1280, `canvas_items` stretch, mobile renderer, touch input
+  (mouse emulates touch in-editor).
+- Tuning values (speed, difficulty, ad frequency…) read from
+  `Backend.cfg("key", default)` with sane local defaults — so live tuning
+  needs no store update. Register the keys in backend `seed.py`.
+- `Analytics.track()` every meaningful moment: game_start, game_over (with
+  score), fever/combo moments, crosspromo_tap, ad events. These feed the
+  kill/scale decision.
+- No external asset dependencies for prototypes: build scenes/shapes in code
+  (see skystack). AI/asset-pack art comes AFTER a mechanic proves retention.
+- GDScript style: typed where practical, tabs, snake_case; scripts must pass
+  `gdparse` (pip install gdtoolkit).
+
+## Kill/scale gate (after ~1 week of soft-launch data)
+
+D1 retention ≥ 35% AND avg sessions/user/day ≥ 8 → keep iterating & market.
+Below gate → freeze the game (leave it live, zero further work), start next.

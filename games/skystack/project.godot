@@ -1,0 +1,36 @@
+; Engine configuration file.
+; Sky Stack — Dream Studio game #1, built on the shared template.
+
+config_version=5
+
+[application]
+
+config/name="Sky Stack"
+config/version="0.1.0"
+config/icon="res://icon.svg"
+run/main_scene="res://scenes/Main.tscn"
+config/features=PackedStringArray("4.3")
+
+[autoload]
+
+GameState="*res://autoload/GameState.gd"
+Backend="*res://autoload/Backend.gd"
+Analytics="*res://autoload/Analytics.gd"
+Ads="*res://autoload/Ads.gd"
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=1280
+window/handheld/orientation=1
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[rendering]
+
+renderer/rendering_method="mobile"
+renderer/rendering_method.mobile="mobile"
