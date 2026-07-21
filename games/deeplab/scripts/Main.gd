@@ -12,8 +12,19 @@ const DEMOS := {
 	"tactics": {"title": "TURN TACTICS", "era": "grid battle (Into the Breach)", "script": preload("res://scripts/demos/Tactics.gd")},
 	"bosshell": {"title": "BOSS BULLET-HELL", "era": "telegraph-dodge-punish", "script": preload("res://scripts/demos/BossHell.gd")},
 	"citysim": {"title": "CITY SIM", "era": "food/pop/coin balance (SimCity)", "script": preload("res://scripts/demos/CitySim.gd")},
+	"deckrogue": {"title": "DECK ROGUE", "era": "map + deckbuild + draft (StS)", "script": preload("res://scripts/demos/DeckRogue.gd")},
+	"surviveevo": {"title": "SURVIVE EVO", "era": "swarm + weapon evolution (VS)", "script": preload("res://scripts/demos/SurviveEvo.gd")},
+	"mergemeta": {"title": "MERGE META", "era": "merge + energy + chapters", "script": preload("res://scripts/demos/MergeMeta.gd")},
+	"autochess": {"title": "AUTO-CHESS", "era": "trait synergies (TFT)", "script": preload("res://scripts/demos/AutoChess.gd")},
+	"mazetd": {"title": "MAZE TD", "era": "route-the-creeps tower defense", "script": preload("res://scripts/demos/MazeTD.gd")},
+	"rhythmaction": {"title": "RHYTHM ACTION", "era": "beat-driven combat (Hi-Fi Rush)", "script": preload("res://scripts/demos/RhythmAction.gd")},
+	"narrative": {"title": "NARRATIVE", "era": "swipe-choice + meters (Reigns)", "script": preload("res://scripts/demos/Narrative.gd")},
+	"marketsim": {"title": "MARKET SIM", "era": "buy-low-sell-high trading", "script": preload("res://scripts/demos/MarketSim.gd")},
+	"ragdoll": {"title": "RAGDOLL FLING", "era": "physics toy (Kick the Buddy)", "script": preload("res://scripts/demos/Ragdoll.gd")},
 }
-const ORDER := ["roguerun", "prestige", "basebuild", "tactics", "bosshell", "citysim"]
+const ORDER := ["roguerun", "deckrogue", "surviveevo", "autochess", "tactics",
+	"prestige", "mergemeta", "basebuild", "citysim", "marketsim",
+	"mazetd", "bosshell", "rhythmaction", "narrative", "ragdoll"]
 
 var state: State = State.MENU
 var current_key := ""

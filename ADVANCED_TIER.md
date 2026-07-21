@@ -63,26 +63,46 @@ Score = bosses downed.
 
 ---
 
-## 🔨 Queued (each is one build away — name it)
+## ✅ 7. Physics sandbox — `ragdoll`
+Drag-fling a ragdoll, bounce off pins for points, fly as far as you can (Kick
+the Buddy). Scripted deterministic physics — endless, score = best distance.
 
-- **7. Physics sandbox** — soft-body / ragdoll / destruction toys; the "mess
-  around" loop (Teardown, Kick the Buddy). Great for ad-driven virality.
-- **8. Rhythm-action hybrid** — a beatmap drives combat/movement; hit on-beat
-  for power (Hi-Fi Rush, Crypt of the NecroDancer). Distinct, sticky.
-- **9. Tower-defense variants** — maze TD (place walls to route creeps), hero
-  TD, co-op lanes. Deeper than the mechlab towerdef anchor.
-- **10. Narrative / choice** — branching dialogue with consequence state; the
-  visual-novel / Reigns / Episode core. Monetizes via story unlocks.
-- **11. Deck-drafting / roguelike deckbuilder** — pick-1-of-3 to build a deck
-  mid-run; marries roguerun + deckbuilder into the full StS experience.
-- **12. Auto-chess with synergies** — trait bonuses, item combines, econ curves
-  (TFT). Deeper than the mechlab autobattler anchor.
-- **13. Survivor evolution** — weapon-combine / evolution trees layered on the
-  survivors mechanic (Vampire Survivors' actual depth).
-- **14. Trading / market sim** — buy-low-sell-high across shifting supply/demand
-  and shocks; the tycoon/economy loop.
-- **15. Merge-3 progression meta** — a merge board wrapped in an energy economy
-  + story goals (Merge Mansion's real structure, not just the board).
+## ✅ 8. Rhythm-action hybrid — `rhythmaction`
+Four-lane beatmap that drives combat: tap on-beat to strike the boss and build
+a combo; a missed note lets the boss hit you (Hi-Fi Rush). Score = bosses.
+
+## ✅ 9. Tower-defense variant — `mazetd`
+Maze TD: place towers on a grid and creeps pathfind AROUND them (BFS), so you
+route the maze to buy kill-time; you can't fully wall them off. Score = waves.
+
+## ✅ 10. Narrative / choice — `narrative`
+Reigns-style: swipe left/right on a card; every choice shifts four resource
+meters; empty OR full any meter and your reign ends. Score = years survived.
+
+## ✅ 11. Roguelike deckbuilder — `deckrogue`
+The full Slay the Spire: deckbuilder combat, then draft 1 of 3 cards, climb
+floors, rest every fourth. Roguerun structure fused with card combat. Score = floors.
+
+## ✅ 12. Auto-chess with synergies — `autochess`
+Buy units whose TRAITS synergize (2 of a trait buffs, 4 buffs more); effective
+power fights the wave; gold interest + reroll (TFT). Score = rounds won.
+
+## ✅ 13. Survivor evolution — `surviveevo`
+Vampire-Survivors swarm where weapons LEVEL and EVOLVE at max into stronger
+forms (Bolt → Railgun, Orbit → Saturn); pick an upgrade each level. Score = kills.
+
+## ✅ 14. Trading / market sim — `marketsim`
+Buy-low-sell-high across three goods with drifting prices + sudden supply
+shocks; grow net worth (tycoon/economy loop). Endless; score = peak net worth.
+
+## ✅ 15. Merge-3 progression meta — `mergemeta`
+A merge board wrapped in the energy + chapter economy that makes Merge Mansion
+a game: spawn (spends energy), merge up, deliver the ordered tier to advance
+the chapter. Endless; score = chapters completed.
+
+---
+
+**All 15 advanced-tier mechanics are now BUILT** in `games/deeplab/` (15 demos).
 
 ## 🚫 Still infra-gated (not mechanic difficulty)
 MOBA, battle royale, .io arenas, CCG PvP, guild wars, UGC platforms — all need
