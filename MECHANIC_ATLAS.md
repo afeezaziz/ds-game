@@ -160,6 +160,18 @@ retention worth scaling socially.
 
 ---
 
+## Modern wing update (2026-07-21)
+
+Eight post-2015 mechanics went LIVE in mechlab, jumping their batch queue:
+**survivors** (auto-battler swarm + level-up choices), **paperio** (territory
+capture vs AI bots — the io feel without netcode), **crowdgate** (Count
+Masters gate-math runner), **mergeboard** (drag-merge grid + orders),
+**arcadeidle** (My Mini Mart walk-collect-sell), **wordle** (guess-feedback
+deduction), **sniper** (scoped mission shooter), **dashrun** (Geometry Dash
+precision runner). Rows below updated accordingly: wave survival ✅, free-merge
+✅, guess-with-feedback ✅, geometry-dash runner ✅, plus four rows this table
+previously lacked. The menu now lists the modern wing first.
+
 ## Batch roadmap
 
 - **Batch 1 (LIVE):** snake, breakout, asteroids, sokoban, flappy, match3,

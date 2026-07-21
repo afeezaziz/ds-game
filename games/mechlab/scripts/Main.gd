@@ -6,6 +6,14 @@ extends Node2D
 enum State { MENU, PLAYING, OVER }
 
 const DEMOS := {
+	"survivors": {"title": "SURVIVORS", "era": "2022 · Vampire Survivors era", "script": preload("res://scripts/demos/Survivors.gd")},
+	"paperio": {"title": "TERRITORY.IO", "era": "2016 · io era (vs bots)", "script": preload("res://scripts/demos/PaperIO.gd")},
+	"crowdgate": {"title": "CROWD GATES", "era": "2021 · runner-ads era", "script": preload("res://scripts/demos/CrowdGate.gd")},
+	"mergeboard": {"title": "MERGE BOARD", "era": "2020 · Merge Mansion era", "script": preload("res://scripts/demos/MergeBoard.gd")},
+	"arcadeidle": {"title": "ARCADE IDLE", "era": "2021 · Mini Mart era", "script": preload("res://scripts/demos/ArcadeIdle.gd")},
+	"wordle": {"title": "WORD GUESS", "era": "2022 · Wordle era", "script": preload("res://scripts/demos/Wordle.gd")},
+	"sniper": {"title": "SNIPER", "era": "2017 · mission shooters", "script": preload("res://scripts/demos/Sniper.gd")},
+	"dashrun": {"title": "DASH RUN", "era": "2013 · precision runners", "script": preload("res://scripts/demos/DashRun.gd")},
 	"snake": {"title": "SNAKE", "era": "1976 · arcade / 1997 · Nokia", "script": preload("res://scripts/demos/Snake.gd")},
 	"breakout": {"title": "BREAKOUT", "era": "1976 · Atari", "script": preload("res://scripts/demos/Breakout.gd")},
 	"asteroids": {"title": "ASTEROIDS", "era": "1979 · Atari", "script": preload("res://scripts/demos/Asteroids.gd")},
@@ -17,7 +25,9 @@ const DEMOS := {
 	"towerdef": {"title": "TOWER DEF", "era": "2008 · TD boom", "script": preload("res://scripts/demos/TowerDef.gd")},
 	"idle": {"title": "IDLE TYCOON", "era": "2013 · Cookie Clicker era", "script": preload("res://scripts/demos/Idle.gd")},
 }
-const ORDER := ["snake", "breakout", "asteroids", "sokoban", "flappy",
+const ORDER := ["survivors", "paperio", "crowdgate", "mergeboard", "arcadeidle",
+	"wordle", "sniper", "dashrun",
+	"snake", "breakout", "asteroids", "sokoban", "flappy",
 	"match3", "sling", "rhythm", "towerdef", "idle"]
 
 var state: State = State.MENU
@@ -72,13 +82,18 @@ func _build_ui() -> void:
 	var sp := Control.new()
 	sp.custom_minimum_size = Vector2(0, 20)
 	v.add_child(sp)
-	var cc := CenterContainer.new()
-	v.add_child(cc)
+	var sc := ScrollContainer.new()
+	sc.custom_minimum_size = Vector2(700, 980)
+	sc.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	v.add_child(sc)
+	var scc := CenterContainer.new()
+	scc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	sc.add_child(scc)
 	grid = GridContainer.new()
 	grid.columns = 2
 	grid.add_theme_constant_override("h_separation", 16)
 	grid.add_theme_constant_override("v_separation", 14)
-	cc.add_child(grid)
+	scc.add_child(grid)
 
 	# HUD
 	hud_box = Control.new()
