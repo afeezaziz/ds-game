@@ -21,9 +21,16 @@ const DEMOS := {
 	"narrative": {"title": "NARRATIVE", "era": "swipe-choice + meters (Reigns)", "script": preload("res://scripts/demos/Narrative.gd")},
 	"marketsim": {"title": "MARKET SIM", "era": "buy-low-sell-high trading", "script": preload("res://scripts/demos/MarketSim.gd")},
 	"ragdoll": {"title": "RAGDOLL FLING", "era": "physics toy (Kick the Buddy)", "script": preload("res://scripts/demos/Ragdoll.gd")},
+	"puzzlerpg": {"title": "PUZZLE RPG", "era": "match-3 battler (P&D)", "script": preload("res://scripts/demos/PuzzleRPG.gd")},
+	"cardbattle": {"title": "CARD BATTLE", "era": "minion board (Hearthstone)", "script": preload("res://scripts/demos/CardBattle.gd")},
+	"idlerpg": {"title": "IDLE RPG", "era": "AFK team auto-battle (AFK Arena)", "script": preload("res://scripts/demos/IdleRPG.gd")},
+	"dungeon": {"title": "DUNGEON", "era": "roguelike grid crawler", "script": preload("res://scripts/demos/Dungeon.gd")},
+	"lifesim": {"title": "LIFE SIM", "era": "needs management (The Sims)", "script": preload("res://scripts/demos/LifeSim.gd")},
+	"factory": {"title": "FACTORY", "era": "production-chain automation", "script": preload("res://scripts/demos/Factory.gd")},
 }
-const ORDER := ["roguerun", "deckrogue", "surviveevo", "autochess", "tactics",
-	"prestige", "mergemeta", "basebuild", "citysim", "marketsim",
+const ORDER := ["roguerun", "deckrogue", "cardbattle", "puzzlerpg", "surviveevo",
+	"idlerpg", "autochess", "tactics", "dungeon", "prestige", "mergemeta",
+	"factory", "basebuild", "citysim", "lifesim", "marketsim",
 	"mazetd", "bosshell", "rhythmaction", "narrative", "ragdoll"]
 
 var state: State = State.MENU

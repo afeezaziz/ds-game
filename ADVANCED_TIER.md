@@ -102,7 +102,22 @@ the chapter. Endless; score = chapters completed.
 
 ---
 
-**All 15 advanced-tier mechanics are now BUILT** in `games/deeplab/` (15 demos).
+**All 15 advanced-tier mechanics are now BUILT** in `games/deeplab/`.
+
+## Deep expansion (2026-07-21) — 6 more genre-defining deep systems (deeplab → 21)
+
+Beyond the core 15, DeepLab now also includes:
+
+- **puzzlerpg** — match-3 that fuels RPG combat (Puzzle & Dragons, Empires & Puzzles)
+- **cardbattle** — minion-board card game vs AI (Hearthstone), distinct from the
+  solo-run deckbuilder
+- **idlerpg** — AFK team auto-battle with hero leveling + ascension (AFK Arena)
+- **dungeon** — roguelike grid crawler with fog of war (Pixel Dungeon)
+- **lifesim** — five-need management sim (The Sims)
+- **factory** — production-chain automation with bottlenecks (Factorio / idle)
+
+DeepLab total: **21 deep systemic mechanics**. Studio total: **79 playable
+mechanics** across mechlab (38) + mechlab3d (20) + deeplab (21).
 
 ## 🚫 Still infra-gated (not mechanic difficulty)
 MOBA, battle royale, .io arenas, CCG PvP, guild wars, UGC platforms — all need
