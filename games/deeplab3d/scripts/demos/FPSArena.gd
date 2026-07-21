@@ -16,9 +16,7 @@ var spawn_t := 0.0
 var wave := 1
 var t := 0.0
 var inv := 0.0
-var move_id := -1
-var move_origin := Vector2.ZERO
-var move_vec := Vector2.ZERO
+var tc: TouchControls
 var hud: Label3D
 var muzzle := 0.0
 
@@ -45,6 +43,25 @@ func start() -> void:
 	hud.position = Vector3(-0.55, -0.42, -1.3)
 	hud.modulate = Color(0.8, 1, 0.9)
 	cam.add_child(hud)
+	tc = add_touch_controls([
+		{"id": "fire", "label": "FIRE", "col": Color(0.9, 0.45, 0.35)},
+		{"id": "reload", "label": "RELOAD", "col": Color(0.55, 0.65, 0.85)},
+	], true)
+	tc.action.connect(func(id):
+		if id == "fire": _fire()
+		elif id == "reload": _reload())
+	tc.look.connect(_on_look)
+
+
+func _on_look(rel: Vector2) -> void:
+	yaw -= rel.x * 0.006
+	pitch = clampf(pitch - rel.y * 0.005, -1.2, 1.2)
+
+
+func _reload() -> void:
+	if reload_t <= 0.0 and ammo < mag:
+		reload_t = 1.1
+		Juice.sfx("tick")
 
 
 func _fire() -> void:
@@ -76,26 +93,11 @@ func _fire() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not running:
 		return
-	if event is InputEventScreenTouch:
-		if event.pressed:
-			if Rect2(W - 200, H - 220, 180, 180).has_point(event.position):
-				_fire()
-			elif event.position.x < W * 0.5 and move_id == -1:
-				move_id = event.index
-				move_origin = event.position
-				move_vec = Vector2.ZERO
-		else:
-			if event.index == move_id:
-				move_id = -1
-				move_vec = Vector2.ZERO
-	elif event is InputEventScreenDrag:
-		if event.index == move_id:
-			move_vec = ((event.position - move_origin) / 80.0).limit_length(1.0)
-		else:
-			yaw -= event.relative.x * 0.006
-			pitch = clampf(pitch - event.relative.y * 0.005, -1.2, 1.2)
-	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		_fire()
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_SPACE:
+			_fire()
+		elif event.keycode == KEY_R:
+			_reload()
 
 
 func _process(delta: float) -> void:
@@ -114,8 +116,8 @@ func _process(delta: float) -> void:
 	f.y = 0
 	f = f.normalized()
 	var r := cam.global_transform.basis.x
-	var inx := move_vec.x + key_axis_x()
-	var inz := -move_vec.y + key_axis_y()
+	var inx := tc.move.x + key_axis_x()
+	var inz := -tc.move.y + key_axis_y()
 	var mv := f * inz + r * inx
 	if mv.length() > 1.0:
 		mv = mv.normalized()

@@ -15,6 +15,7 @@ var ebul: Array = []
 var foes: Array = []
 var spawn_t := 0.0
 var t := 0.0
+var tc: TouchControls
 var hud: Label3D
 
 
@@ -41,6 +42,14 @@ func start() -> void:
 	hud.position = Vector3(-0.5, -0.4, -1.3)
 	hud.modulate = Color(0.9, 1, 0.9)
 	cam.add_child(hud)
+	tc = add_touch_controls([{"id": "fire", "label": "FIRE", "col": Color(0.9, 0.45, 0.35)}], true, false)
+	tc.action.connect(func(_id): _fire())
+	tc.look.connect(_on_look)
+
+
+func _on_look(rel: Vector2) -> void:
+	yaw -= rel.x * 0.004
+	pitch = clampf(pitch - rel.y * 0.003, -0.9, 0.9)
 
 
 func _fire() -> void:
@@ -55,13 +64,7 @@ func _fire() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not running:
 		return
-	if event is InputEventScreenTouch and event.pressed:
-		if Rect2(W - 200, H - 220, 180, 180).has_point(event.position):
-			_fire()
-	elif event is InputEventScreenDrag:
-		yaw -= event.relative.x * 0.004
-		pitch = clampf(pitch - event.relative.y * 0.003, -0.9, 0.9)
-	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE:
 		_fire()
 
 

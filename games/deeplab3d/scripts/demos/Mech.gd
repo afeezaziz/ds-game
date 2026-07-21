@@ -28,11 +28,7 @@ var ebul: Array = []
 var spawn_t := 2.0
 var kills := 0
 
-var stick := Vector2.ZERO
-var stick_on := false
-var stick_id := -1
-var origin := Vector2.ZERO
-var look_id := -1
+var tc: TouchControls
 var hud: Label3D
 var t := 0.0
 const HEAT_MAX := 100.0
@@ -71,6 +67,21 @@ func start() -> void:
 	hud.position = Vector3(-0.62, -0.42, -1.2)
 	hud.modulate = Color(0.7, 1, 0.9)
 	cam.add_child(hud)
+	tc = add_touch_controls([
+		{"id": "cannon", "label": "CANNON", "col": Color(0.8, 0.85, 1.0)},
+		{"id": "missile", "label": "MISSILE", "col": Color(1.0, 0.7, 0.3)},
+		{"id": "boost", "label": "BOOST", "col": Color(0.5, 0.9, 0.7)},
+	], true)
+	tc.action.connect(func(id):
+		if id == "cannon": _cannon()
+		elif id == "missile": _missile()
+		elif id == "boost": _boost())
+	tc.look.connect(_on_look)
+
+
+func _on_look(rel: Vector2) -> void:
+	yaw -= rel.x * 0.004
+	pitch = clampf(pitch - rel.y * 0.003, -0.7, 0.7)
 
 
 func _add_heat(h: float) -> void:
@@ -151,42 +162,8 @@ func _kill(i: int) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not running:
 		return
-	if event is InputEventScreenTouch:
-		if event.pressed:
-			var p := event.position
-			if Rect2(W - 190, H - 220, 170, 170).has_point(p):
-				_cannon()
-			elif Rect2(W - 190, H - 420, 170, 170).has_point(p):
-				_missile()
-			elif Rect2(W - 380, H - 220, 170, 170).has_point(p):
-				_boost()
-			elif p.x < W * 0.42:
-				stick_on = true
-				stick_id = event.index
-				origin = p
-				stick = Vector2.ZERO
-			else:
-				look_id = event.index
-		else:
-			if event.index == stick_id:
-				stick_on = false
-				stick_id = -1
-				stick = Vector2.ZERO
-			elif event.index == look_id:
-				look_id = -1
-	elif event is InputEventScreenDrag:
-		if event.index == stick_id and stick_on:
-			stick = ((event.position - origin) / 70.0).limit_length(1.0)
-		elif event.index == look_id:
-			yaw -= event.relative.x * 0.004
-			pitch = clampf(pitch - event.relative.y * 0.003, -0.7, 0.7)
-	elif event is InputEventMouseMotion and (event.button_mask & MOUSE_BUTTON_MASK_LEFT):
-		yaw -= event.relative.x * 0.004
-		pitch = clampf(pitch - event.relative.y * 0.003, -0.7, 0.7)
-	elif event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_J:
-			_cannon()
-		elif event.keycode == KEY_K:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_K:
 			_missile()
 		elif event.keycode == KEY_SHIFT:
 			_boost()
@@ -206,10 +183,14 @@ func _process(delta: float) -> void:
 		overheat = false
 	energy = minf(100.0, energy + 22.0 * delta)
 
+	# hold CANNON (or J) to auto-fire at the weapon's cadence
+	if tc.held("cannon") or Input.is_key_pressed(KEY_J):
+		_cannon()
+
 	# movement: camera-relative on the ground plane
 	var flat := Vector3(-sin(yaw), 0, -cos(yaw))
 	var right := Vector3(cos(yaw), 0, -sin(yaw))
-	var wish := flat * (stick.y * -1.0 + key_axis_y()) + right * (stick.x + key_axis_x())
+	var wish := flat * (tc.move.y * -1.0 + key_axis_y()) + right * (tc.move.x + key_axis_x())
 	if wish.length() > 1.0:
 		wish = wish.normalized()
 	vel = vel.move_toward(wish * 12.0, 40.0 * delta)

@@ -7,9 +7,7 @@ var player: MeshInstance3D
 var ppos := Vector2.ZERO
 var hp := 3
 var inv := 0.0
-var move := Vector2.ZERO
-var stick := false
-var origin := Vector2.ZERO
+var tc: TouchControls
 var enemies: Array = []
 var arrows: Array = []
 var fire_t := 0.0
@@ -26,35 +24,20 @@ func start() -> void:
 	ppos = Vector2.ZERO
 	hp = 3
 	inv = 0.0
-	move = Vector2.ZERO
 	enemies.clear()
 	arrows.clear()
 	fire_t = 0.0
 	spawn_t = 0.4
 	still_t = 0.0
 	make_camera(Vector3(0, 18, 15), Vector3(0, 0, 0), 55.0)
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if not running:
-		return
-	if event is InputEventScreenTouch:
-		if event.pressed:
-			stick = true
-			origin = event.position
-			move = Vector2.ZERO
-		else:
-			stick = false
-			move = Vector2.ZERO
-	elif event is InputEventScreenDrag and stick:
-		move = ((event.position - origin) / 70.0).limit_length(1.0)
+	tc = add_touch_controls([])   # move-only: standing still auto-fires
 
 
 func _process(delta: float) -> void:
 	if not running:
 		return
 	inv -= delta
-	var mv := move + Vector2(key_axis_x(), -key_axis_y())
+	var mv := tc.move + Vector2(key_axis_x(), -key_axis_y())
 	mv = mv.limit_length(1.0)
 	ppos += mv * 8.0 * delta
 	ppos.x = clampf(ppos.x, -ARENA + 1, ARENA - 1)

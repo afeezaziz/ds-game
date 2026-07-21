@@ -9,6 +9,11 @@ extends Node3D
 signal score_changed(score: int)
 signal demo_over(score: int)
 
+## Design resolution — every demo lays out touch UI in this 720x1280 space;
+## the mobile stretch (canvas_items) scales it to any screen.
+const W := 720.0
+const H := 1280.0
+
 var score := 0
 var running := false
 var cam: Camera3D
@@ -157,3 +162,19 @@ func key_axis_y() -> float:
 	if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN):
 		v -= 1.0
 	return v
+
+
+# ---------- shared on-screen touch overlay ----------
+
+func add_touch_controls(buttons: Array, want_look := false, want_stick := true) -> TouchControls:
+	## Spawn the visible virtual gamepad (joystick + labeled buttons + optional
+	## look region) on its own CanvasLayer above the demo. Auto-hides on death so
+	## the game-over/retry tap isn't swallowed. See TouchControls.gd.
+	var layer := CanvasLayer.new()
+	layer.layer = 3
+	add_child(layer)
+	var tc := TouchControls.new()
+	layer.add_child(tc)
+	tc.setup(self, buttons, want_look, want_stick)
+	demo_over.connect(func(_s): tc.visible = false)
+	return tc

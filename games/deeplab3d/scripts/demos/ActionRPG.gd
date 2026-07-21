@@ -17,9 +17,7 @@ var atk_flash := 0.0
 var enemies: Array = []
 var spawn_t := 0.0
 var t := 0.0
-var stick := Vector2.ZERO
-var stick_on := false
-var origin := Vector2.ZERO
+var tc: TouchControls
 var hud: Label3D
 
 
@@ -43,6 +41,8 @@ func start() -> void:
 	t = 0.0
 	hud = label3d("", Vector3(0, 3, 0), 40, Color.WHITE)
 	make_camera(Vector3(0, 13, 10), Vector3.ZERO, 55.0)
+	tc = add_touch_controls([{"id": "attack", "label": "ATTACK", "col": Color(0.9, 0.5, 0.4)}])
+	tc.action.connect(func(_id): attack())
 
 
 func attack() -> void:
@@ -75,19 +75,7 @@ func _gain_xp() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not running:
 		return
-	if event is InputEventScreenTouch:
-		if event.pressed and event.position.x < W * 0.5:
-			stick_on = true
-			origin = event.position
-			stick = Vector2.ZERO
-		elif event.pressed and event.position.x >= W * 0.5:
-			attack()
-		elif not event.pressed:
-			stick_on = false
-			stick = Vector2.ZERO
-	elif event is InputEventScreenDrag and stick_on:
-		stick = ((event.position - origin) / 70.0).limit_length(1.0)
-	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE:
 		attack()
 
 
@@ -97,7 +85,7 @@ func _process(delta: float) -> void:
 	t += delta
 	inv -= delta
 	atk_flash = maxf(0.0, atk_flash - delta)
-	var mv := Vector3(stick.x + key_axis_x(), 0, stick.y - key_axis_y())
+	var mv := Vector3(tc.move.x + key_axis_x(), 0, tc.move.y - key_axis_y())
 	if mv.length() > 1.0:
 		mv = mv.normalized()
 	ppos += mv * 8.0 * delta

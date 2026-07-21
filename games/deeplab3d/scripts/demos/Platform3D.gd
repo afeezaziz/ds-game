@@ -13,9 +13,7 @@ var stars: Array = []
 var lives := 3
 var lev12 := 1
 var spawn0 := Vector3(0, 1.2, 0)
-var stick := Vector2.ZERO
-var stick_on := false
-var origin := Vector2.ZERO
+var tc: TouchControls
 var hud: Label3D
 var t := 0.0
 
@@ -31,6 +29,8 @@ func start() -> void:
 	hud = label3d("", Vector3(0, 4, 0), 40, Color.WHITE)
 	_gen()
 	make_camera(Vector3(0, 12, 12), Vector3.ZERO, 60.0)
+	tc = add_touch_controls([{"id": "jump", "label": "JUMP", "col": Color(0.45, 0.75, 0.5)}])
+	tc.action.connect(func(_id): _jump())
 
 
 func _gen() -> void:
@@ -78,19 +78,7 @@ func _jump() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not running:
 		return
-	if event is InputEventScreenTouch:
-		if event.pressed and event.position.x >= W * 0.5:
-			_jump()
-		elif event.pressed and event.position.x < W * 0.5:
-			stick_on = true
-			origin = event.position
-			stick = Vector2.ZERO
-		elif not event.pressed:
-			stick_on = false
-			stick = Vector2.ZERO
-	elif event is InputEventScreenDrag and stick_on:
-		stick = ((event.position - origin) / 70.0).limit_length(1.0)
-	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE:
 		_jump()
 
 
@@ -104,7 +92,7 @@ func _process(delta: float) -> void:
 			p.pos = p.base + (Vector3(off, 0, 0) if p.axis == 0 else Vector3(0, 0, off))
 			p.node.position = p.pos
 
-	var mv := Vector3(stick.x + key_axis_x(), 0, stick.y - key_axis_y())
+	var mv := Vector3(tc.move.x + key_axis_x(), 0, tc.move.y - key_axis_y())
 	if mv.length() > 1.0:
 		mv = mv.normalized()
 	ppos += mv * 7.0 * delta

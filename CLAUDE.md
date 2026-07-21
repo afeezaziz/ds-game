@@ -37,8 +37,12 @@ Each game folder is a complete standalone Godot project (open its project.godot)
 - `python tools/export_android.py [game] [--apk]` — batch AAB/APK export
   (needs one-time editor setup; see the script's docstring).
 - `.github/workflows/android-build.yml` — CI builds on tag or manual dispatch;
-  secrets documented in the file. iOS deliberately deferred (needs macOS +
-  Apple dev account); add a macos job to the same workflow when a game earns it.
+  secrets documented in the file. **We test on real Android AND iOS phones** (on
+  top of editor playtests), so every mechanic must hold up to touch + on-device
+  perf, not just mouse/keyboard in the editor. iOS export needs a macOS runner +
+  Apple dev account — add a `macos` job to the same workflow (Godot iOS export
+  preset, then Xcode archive) before the first store submission; keep touch input
+  and portrait layout iOS-safe (safe-area insets, notch) as a standing constraint.
 
 ## Juice (feel) rules
 
@@ -64,6 +68,17 @@ Each game folder is a complete standalone Godot project (open its project.godot)
   `interstitial_closed` / `rewarded_completed` after one frame).
 - Portrait 720x1280, `canvas_items` stretch, mobile renderer, touch input
   (mouse emulates touch in-editor).
+- **Mobile-first: these ship to real Android/iOS phones, not just the editor.**
+  Every mechanic must be fully playable by touch with VISIBLE affordances — no
+  invisible tap zones. For the 3D labs use the shared `TouchControls` overlay:
+  in a demo's `start()` call `add_touch_controls([{ "id", "label", "col" }, …],
+  want_look, want_stick)`, then read `tc.move` (Vector2) for the stick,
+  `tc.held(id)` for hold buttons, and connect `tc.action`/`tc.look`. It draws a
+  floating joystick + labeled buttons + optional look region, is multitouch, and
+  auto-hides on death so retry-tap still lands. Keep keyboard (`key_axis_*` +
+  discrete keys) working in parallel for desktop playtesting. Never hardcode UI
+  to H=1280 — TouchControls lays out from the live viewport size so it stays
+  pinned to real screen edges under "expand" stretch and rotation.
 - Tuning values (speed, difficulty, ad frequency…) read from
   `Backend.cfg("key", default)` with sane local defaults — so live tuning
   needs no store update. Register the keys in backend `seed.py`.

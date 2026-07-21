@@ -28,9 +28,7 @@ var is_night := false
 var to_spawn := 0
 var spawn_t := 0.0
 
-var stick := Vector2.ZERO
-var stick_on := false
-var origin := Vector2.ZERO
+var tc: TouchControls
 var gathering := false
 var hud: Label3D
 var env: Environment
@@ -68,6 +66,15 @@ func start() -> void:
 	is_night = false
 	make_camera(Vector3(0, 18, 18), Vector3.ZERO, 55.0)
 	hud = label3d("", Vector3(0, 12, 0), 34, Color.WHITE)
+	tc = add_touch_controls([
+		{"id": "gather", "label": "GATHER", "col": Color(0.6, 0.75, 0.4)},
+		{"id": "build", "label": "BUILD", "col": Color(0.6, 0.5, 0.4)},
+		{"id": "eat", "label": "EAT", "col": Color(0.8, 0.35, 0.55)},
+	])
+	tc.action.connect(func(id):
+		if id == "gather": _gather()
+		elif id == "build": _build_wall()
+		elif id == "eat": _eat())
 
 
 func _scatter_resources() -> void:
@@ -146,28 +153,8 @@ func _eat() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not running:
 		return
-	if event is InputEventScreenTouch:
-		if event.pressed and Rect2(W - 190, H - 220, 170, 170).has_point(event.position):
-			gathering = true
-			_gather()
-		elif event.pressed and Rect2(W - 190, H - 420, 170, 170).has_point(event.position):
-			_build_wall()
-		elif event.pressed and Rect2(W - 380, H - 220, 170, 170).has_point(event.position):
-			_eat()
-		elif event.pressed and event.position.x < W * 0.5:
-			stick_on = true
-			origin = event.position
-			stick = Vector2.ZERO
-		elif not event.pressed:
-			stick_on = false
-			gathering = false
-			stick = Vector2.ZERO
-	elif event is InputEventScreenDrag and stick_on:
-		stick = ((event.position - origin) / 70.0).limit_length(1.0)
-	elif event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_J:
-			_gather()
-		elif event.keycode == KEY_B:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_B:
 			_build_wall()
 		elif event.keycode == KEY_E:
 			_eat()
@@ -214,7 +201,8 @@ func _process(delta: float) -> void:
 		return
 
 	# move
-	var mv := Vector3(stick.x + key_axis_x(), 0, stick.y - key_axis_y())
+	gathering = tc.held("gather") or Input.is_key_pressed(KEY_J)
+	var mv := Vector3(tc.move.x + key_axis_x(), 0, tc.move.y - key_axis_y())
 	if mv.length() > 0.05:
 		if mv.length() > 1.0:
 			mv = mv.normalized()

@@ -28,9 +28,7 @@ var kills := 0
 
 var move_t := 1.2                 # time until next attack is chosen
 var tele: Array = []              # active telegraphs: {kind,pos,dir,r,ang,t,dur,dmg,node}
-var stick := Vector2.ZERO
-var stick_on := false
-var origin := Vector2.ZERO
+var tc: TouchControls
 var hud: Label3D
 var t := 0.0
 
@@ -54,6 +52,13 @@ func start() -> void:
 	kills = 0
 	make_camera(Vector3(0, 20, 22), Vector3.ZERO, 55.0)
 	hud = label3d("", Vector3(0, 16, 0), 38, Color.WHITE)
+	tc = add_touch_controls([
+		{"id": "attack", "label": "ATTACK", "col": Color(0.9, 0.5, 0.4)},
+		{"id": "dodge", "label": "DODGE", "col": Color(0.4, 0.7, 0.95)},
+	])
+	tc.action.connect(func(id):
+		if id == "attack": _attack()
+		elif id == "dodge": _dodge())
 
 
 func _spawn_boss() -> void:
@@ -182,21 +187,7 @@ func _resolve(x: Dictionary) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not running:
 		return
-	if event is InputEventScreenTouch:
-		if event.pressed and Rect2(W - 190, H - 220, 170, 170).has_point(event.position):
-			_attack()
-		elif event.pressed and Rect2(W - 190, H - 420, 170, 170).has_point(event.position):
-			_dodge()
-		elif event.pressed and event.position.x < W * 0.5:
-			stick_on = true
-			origin = event.position
-			stick = Vector2.ZERO
-		elif not event.pressed:
-			stick_on = false
-			stick = Vector2.ZERO
-	elif event is InputEventScreenDrag and stick_on:
-		stick = ((event.position - origin) / 70.0).limit_length(1.0)
-	elif event is InputEventKey and event.pressed and not event.echo:
+	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_SPACE:
 			_dodge()
 		elif event.keycode == KEY_J:
@@ -212,7 +203,7 @@ func _process(delta: float) -> void:
 	stam = minf(100.0, stam + 18.0 * delta)
 
 	# player move
-	var mv := Vector3(stick.x + key_axis_x(), 0, stick.y - key_axis_y())
+	var mv := Vector3(tc.move.x + key_axis_x(), 0, tc.move.y - key_axis_y())
 	if mv.length() > 0.05:
 		if mv.length() > 1.0:
 			mv = mv.normalized()
