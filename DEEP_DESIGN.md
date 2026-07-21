@@ -63,3 +63,56 @@ Deep rebuild adds:
 The principle for all of them: a mechanic gets deep when a *second system feeds
 back into the first*. That feedback loop — statuses×relics, weapons×passives,
 generators×prestige — is what turns a toy into a game.
+
+---
+
+# DeepLab 3D — the depth pass in three dimensions
+
+`games/deeplab3d/` applies the same principle in 3D: each demo carries the
+*depth system*, not just the verb. All scripted (no physics engine) so every
+mechanic runs deterministically; gray-box primitives only.
+
+### Boss Raid (bossraid) — depth = *telegraph→resolve + phases + positional dmg*
+Not "hit the big enemy". The boss runs a **move set that changes per phase**
+(100/60/25% HP). Every attack **telegraphs** (a ground marker grows in alpha)
+then **resolves** — you read it and dodge out of the shape in time, or eat it.
+Attacks have real shapes: point-blank slam (AoE), facing cone sweep, a **charge**
+that relocates the boss along a line, and a phase-3 **inverse ring** that is only
+safe if you hug the boss. Hits to the **weak point on its back** deal 2x, so
+positioning is the skill. A **dodge-roll** spends stamina for i-frames. Miss the
+**DPS check** and the boss **enrages** (faster telegraphs, harder hits). Feedback
+loop: phase → new patterns → forces new positioning → weak-point windows.
+
+### Survival 3D (survival3d) — depth = *gather → craft → defend, gated by a clock*
+A **day/night cycle** is the pressure. By day you **gather** wood/stone from
+resource nodes and **hunger** ticks down (eat berries or it eats your HP). At
+**night**, raiders spawn at the map edge and march on your **campfire**; you
+spend wood to **build walls** that block their path (they attack the wall first)
+and to **reheal the fire**. Survive a night → score. Wave size scales with the
+day count, so the gather/build economy must outpace the escalating threat.
+Feedback loop: daytime gathering → nighttime defenses → survive → harder night.
+
+### Mech Combat (mech) — depth = *two weapons on a shared HEAT economy + lock-on*
+The heat gauge is the whole game. The **cannon** is cheap hitscan; **missiles**
+need a **lock** (hold your aim cone on a foe until it fills) and hit hard but
+spike heat. Fire too much → **overheat lockout** (can't shoot until it cools, and
+it cools *slower* while overheated — a real punish). A **boost-dash** burns a
+separate **energy** pool for i-frames and repositioning. Enemy mechs strafe to
+mid-range and fire, wearing your **armor** down. Feedback loop: heat forces you
+to alternate cheap cannon vs committed missiles, and to earn locks under fire.
+
+### The rest (breadth exhibits with one depth hook each)
+- **actionrpg** — XP/levels: kills grant XP; leveling raises damage + max HP, so
+  the power curve feeds the combat.
+- **fpsarena** — ammo/magazine/reload and aim-cone accuracy gate the shooting.
+- **td3d** — a real creep **path** with per-wave scaling; tower placement vs path
+  proximity is the puzzle.
+- **racing** — AI rivals + a **drift→boost** economy (charge while drifting, fire
+  on release) over a 3-lap circuit.
+- **platform3d** — double-jump + **moving platforms** + collect-all-to-advance;
+  lives gate mistakes.
+- **dogfight** — pitch/yaw flight with homing foes and an HP budget.
+- **citybuild3d** — orbit-cam placement with a **food×population** economy loop.
+
+Same rule as the 2D pass: a mechanic gets deep when a second system feeds back
+into the first — telegraph×positioning, gather×defend, heat×weapon-choice.

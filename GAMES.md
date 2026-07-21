@@ -160,11 +160,42 @@ See ADVANCED_TIER.md for the full 15-mechanic tier and what's still queued.
 
 ---
 
+## 8 · DeepLab 3D — *deep / systemic 3D mechanics museum*
+
+**One-liner:** The 3D genres people sink hundreds of hours into, gray-boxed.
+
+**Short description (80 chars):**
+Action-RPG, FPS arena, TD, circuit racing, boss raid, survival, mech — 10 deep 3D loops.
+
+**Full description:**
+The 3D counterpart to DeepLab: ten systemic 3D loops, each carrying the depth
+system that actually retains — not just the verb. A third-person action-RPG with
+XP and levels; a first-person arena with ammo, reloads and aim-cones; a 3D tower
+defense with a real creep path; a circuit racer with AI rivals, drift and boost;
+a double-jump collectathon platformer; an Ace-Combat-lite dogfight; an orbit-cam
+city builder with a food/population economy; a Monster-Hunter-style **boss raid**
+where every attack telegraphs then resolves, weak-point hits double, and missing
+the DPS check enrages the boss; a Valheim-lite **survival** loop of gather →
+build walls → defend the campfire through escalating nights; and a Titanfall-lite
+**mech** with two weapons on a shared heat gauge, lock-on missiles, and a
+boost-dash on energy. All gray-box, all playable on desktop (mouse + WASD) or
+touch — built to find which deep 3D system is worth wrapping a proven mechanic in.
+
+**Keywords:** 3D, action-rpg, fps, tower-defense, racing, boss-raid, survival, mech
+
+**Experiment question:** which deep 3D loop (RPG-progression / arena-shooter /
+lane-defense / racing / collectathon / air-combat / city-economy / raid-boss /
+survival-craft / mech-heat) holds attention longest in gray-box — and does the
+mobile renderer hold 60fps with the added AI, projectiles and day/night on
+low-end Android? Winners graduate to a polished title.
+
+---
+
 ## Portfolio notes
 
-- All three run fully offline; leaderboards/config/cross-promo light up when
-  the backend is reachable. Cross-promo is now live in all directions: each
-  game-over screen advertises the other two.
+- All of them run fully offline; leaderboards/config/cross-promo light up when
+  the backend is reachable. Cross-promo is live across the portfolio: each
+  game-over screen advertises sibling titles.
 - Store URLs go into `backend/seed.py` after each Play Store listing exists.
 - Tuning is remote: difficulty, gem rates, beam speeds, ad frequency — all
   adjustable per game from the backend without an app update.
