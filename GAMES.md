@@ -221,6 +221,50 @@ and physics. Winners graduate; the rest still teach the genre's core tension.
 
 ---
 
+## 10–15 · The genre-coverage labs — *filling the 3D gaps*
+
+Six themed labs built to close the remaining flagship-3D gaps, one family per lab.
+Same standard throughout: each demo carries its genre's real depth loop, is scripted
+(no physics engine, so it runs deterministically), plays on desktop (WASD + mouse) or
+touch via the shared on-screen controls, and is gray-box. 32 mechanics total.
+
+**10 · ShootLab 3D** — *shooter genres.* Extraction (raid → loot → extract-or-lose-it
+greed), hero shooter (asymmetric kit + objective capture), on-rails light-gun, co-op
+horde survival with special infected, and an FPS × tower-defense hybrid (place traps,
+then also shoot). Question: which shooter loop retains without a UA budget.
+
+**11 · RideLab 3D** — *vehicles.* Delivery/taxi sim (pickup → deliver vs traffic + a
+fare clock), tank battle (hull vs turret + armor-angle damage), true 6DOF Newtonian
+space flight (momentum drift is the feel), and a demolition derby (momentum ram damage
++ visible deformation).
+
+**12 · SportLab 3D** — *sports & physics toys.* Golf (aim/power/slope), pool (elastic
+ball collisions + pockets), bowling (line/hook + pin chains), skateboarding (trick-combo
+chaining, land-clean-or-bail), snowboard (carve + air tricks), fishing (bite timing +
+reel-tension), boxing (read-telegraph → slip/block → counter).
+
+**13 · QuestLab 3D** — *RPG/adventure.* Turn-based JRPG (party + ATB + MP), squad breach
+(fireteam + covering fire + room clears), Zelda-style item-gated dungeon (key/bomb/bow
+unlock the path), 3D metroidvania (double-jump/dash gate the map), survival horror (ammo
+scarcity → fight-or-flee), immersive sim (blink/takedown/loud — many paths), and a
+first-person grid dungeon crawler.
+
+**14 · SimLab 3D** — *sim & management.* Farm & life sim (plant → grow-over-days →
+harvest → reinvest, + townsfolk), cooking rush (order queue + station routing under
+timers), park tycoon (build → guests → income), colony sim (labour allocation +
+food/raid survival), and a monster tamer (weaken → catch → team → battle).
+
+**15 · TableLab 3D** — *board/card/party.* Card battler (mana curve + board trades +
+hero race), auto-battler (gold economy + three-of-a-kind combines + auto-resolve),
+party-game gauntlet (mash/dodge/react microgames), and a physics puzzle (carry cubes
+onto pressure plates to open the gate).
+
+**Experiment question (all six):** across ~32 gray-box genres, which loops hold
+attention and 60fps on low-end Android — and which flagship genre is worth a full team
+wrapping into a tentpole title. Winners graduate; the rest still map the genre space.
+
+---
+
 ## Portfolio notes
 
 - All of them run fully offline; leaderboards/config/cross-promo light up when
