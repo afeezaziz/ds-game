@@ -191,6 +191,36 @@ low-end Android? Winners graduate to a polished title.
 
 ---
 
+## 9 · FlagLab 3D — *flagship 3D genres museum*
+
+**One-liner:** The 3D shapes behind the top-grossing charts, gray-boxed to play.
+
+**Short description (80 chars):**
+MOBA, battle royale, open-world, voxel, cover-shooter, stealth, musou, RTS — 10 flagships.
+
+**Full description:**
+The genres people pour hundreds of hours (and billions of dollars) into, each
+carrying its real depth loop. Push a lane past minions and towers in a MOBA;
+survive a shrinking-zone battle royale with tiered loot; drive-and-shoot a GTA-
+style open world with a five-star wanted ladder; mine and place blocks through
+voxel days and mob-filled nights; peek from cover under suppression in a Gears-
+style shooter; slip past patrol vision cones for silent takedowns; mow crowds and
+bank a musou gauge; chain scripted-pendulum grapple swings across a skyline;
+knock a ball into the net in rocket-car football; and macro a base to raze the
+enemy in a top-down RTS. All gray-box, all playable on desktop (WASD + mouse) or
+touch via the shared on-screen controls — the named targets you'd build a
+RM10M/month title around, prototyped in a week.
+
+**Keywords:** 3D, MOBA, battle-royale, open-world, voxel, stealth, RTS, rocket-car
+
+**Experiment question:** which flagship 3D loop (lane-push / zone-survival /
+open-world-heat / voxel-build / cover-peek / stealth-detection / crowd-musou /
+swing-momentum / car-ball / base-macro) is worth a full team wrapping into a
+tentpole title — and which hold 60fps on low-end Android with their AI, crowds
+and physics. Winners graduate; the rest still teach the genre's core tension.
+
+---
+
 ## Portfolio notes
 
 - All of them run fully offline; leaderboards/config/cross-promo light up when

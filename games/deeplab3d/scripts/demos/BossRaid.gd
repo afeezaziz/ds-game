@@ -178,7 +178,6 @@ func _resolve(x: Dictionary) -> void:
 	if hit and iframe <= 0.0:
 		php -= x.dmg
 		Juice.flash(Color(1, 0.2, 0.2), 0.25)
-		Juice.shake2d(6.0)
 		Juice.haptic(35)
 		if php <= 0.0:
 			end_demo()

@@ -289,7 +289,6 @@ func _process(delta: float) -> void:
 			ebul.erase(b)
 			armor -= 9.0
 			Juice.flash(Color(1, 0.25, 0.25), 0.2)
-			Juice.shake2d(5.0)
 			Juice.haptic(28)
 			if armor <= 0.0:
 				end_demo()
