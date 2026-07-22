@@ -265,6 +265,30 @@ wrapping into a tentpole title. Winners graduate; the rest still map the genre s
 
 ---
 
+## 16 · TentLab 3D — *tentpole flagship gaps*
+
+The highest-value genres still missing from the labs — the ones you'd build a
+tentpole title around. 12 mechanics, same standard (deep loop, scripted, gray-box,
+shared touch controls, desktop + touch):
+
+**Rhythm** (four-lane beat game — timing + combo), **Party Royale** (Fall Guys
+obstacle gauntlet — dodge sweepers, qualify, field shrinks), **Factory** (Factorio
+conveyor automation — route ore → maker → hub for throughput), **Soccer** and
+**Basketball** (real team sports with ball physics + opponent AI), **Pinball**
+(scripted flippers + bumpers + 3 balls), **Portal** (place two linked portals and
+route yourself across the void), **Perspective** (Monument-Valley rotate-to-align
+the impossible path), **Loot ARPG** (Diablo kill→loot→upgrade treadmill),
+**Souls-like** (stamina economy + i-frame rolls + estus + telegraphed boss),
+**Tactics** (XCOM turn-based grid — cover drops hit%, flanking raises it), and
+**Photo Safari** (Pokémon Snap — frame centred, close, mid-pose; limited film).
+
+**Experiment question:** these are the loops with the strongest live-ops and
+virality track records (rhythm, Fall Guys, factory, sports, souls, loot). Which
+one earns a full team wrapping it into a tentpole — and which hold 60fps on
+low-end Android with their AI, crowds and physics.
+
+---
+
 ## Portfolio notes
 
 - All of them run fully offline; leaderboards/config/cross-promo light up when
